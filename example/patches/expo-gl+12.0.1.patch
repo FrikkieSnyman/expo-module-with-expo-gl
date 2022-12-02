@@ -1,0 +1,61 @@
+diff --git a/node_modules/expo-gl/EXGL.podspec b/node_modules/expo-gl/EXGL.podspec
+index ec0ae54..ee7b3b1 100644
+--- a/node_modules/expo-gl/EXGL.podspec
++++ b/node_modules/expo-gl/EXGL.podspec
+@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
+   s.static_framework = true
+ 
+   s.dependency 'ExpoModulesCore'
+-  s.dependency 'React-jsi'
++  s.dependency 'ReactCommon/turbomodule/core'
+ 
+   s.compiler_flags = '-x objective-c++ -std=c++1z'
+   s.pod_target_xcconfig = {
+@@ -26,6 +26,8 @@ Pod::Spec.new do |s|
+     s.source_files = "ios/**/*.h"
+     s.vendored_frameworks = "#{s.name}.xcframework"
+   else
+-    s.source_files = "ios/**/*.{h,m,mm}", "common/**/*.{h,cpp,def}"
++    s.source_files = "ios/**/*.{h,m,mm,swift}", "common/**/*.{h,cpp,def}"
+   end
++
++  s.public_header_files = ['ios/**/*.h', 'common/EXGLNativeApi.h']
+ end
+diff --git a/node_modules/expo-gl/common/EXGLNativeApi.h b/node_modules/expo-gl/common/EXGLNativeApi.h
+index d39714d..ac62ccf 100644
+--- a/node_modules/expo-gl/common/EXGLNativeApi.h
++++ b/node_modules/expo-gl/common/EXGLNativeApi.h
+@@ -29,10 +29,13 @@ typedef unsigned int EXGLObjectId;
+ EXGLContextId EXGLContextCreate();
+ 
+ 
++#ifdef __cplusplus
+ // [JS thread] Create an EXGL context and return its id number. Saves the
+ // JavaScript interface object (has a WebGLRenderingContext-style API) at
+ // `global.__EXGLContexts[id]` in JavaScript.
+ void EXGLContextPrepare(void *runtime, EXGLContextId exglCtxId, std::function<void(void)> flushMethod);
++#endif // __cplusplus
++
+ 
+ // [Any thread] Check whether we should redraw the surface
+ bool EXGLContextNeedsRedraw(EXGLContextId exglCtxId);
+diff --git a/node_modules/expo-gl/ios/EXGL/EXGLObjectManager.h b/node_modules/expo-gl/ios/EXGL/EXGLObjectManager.h
+index 51ef7c0..af7a9fc 100644
+--- a/node_modules/expo-gl/ios/EXGL/EXGLObjectManager.h
++++ b/node_modules/expo-gl/ios/EXGL/EXGLObjectManager.h
+@@ -5,7 +5,7 @@
+ 
+ #import <ExpoModulesCore/EXUIManager.h>
+ #import <ExpoModulesCore/EXFileSystemInterface.h>
+-
++#import "EXGLContext.h"
+ @interface EXGLObjectManager : EXExportedModule <EXModuleRegistryConsumer>
+ 
+ @property (nonatomic, weak, nullable) id<EXUIManager> uiManager;
+@@ -13,5 +13,6 @@
+ 
+ - (void)saveContext:(nonnull id)glContext;
+ - (void)deleteContextWithId:(nonnull NSNumber *)contextId;
++- (EXGLContext*_Nullable)getContextWithId:(nonnull NSNumber *)contextId;
+ 
+ @end

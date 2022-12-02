@@ -11,7 +11,7 @@ PODS:
     - ExpoModulesCore
   - EXGL (12.0.1):
     - ExpoModulesCore
-    - React-jsi
+    - ReactCommon/turbomodule/core
   - Expo (47.0.8):
     - ExpoModulesCore
   - ExpoKeepAwake (11.0.1):
@@ -448,7 +448,7 @@ SPEC CHECKSUMS:
   EXConstants: 3c86653c422dd77e40d10cbbabb3025003977415
   EXFileSystem: 60602b6eefa6873f97172c684b7537c9760b50d6
   EXFont: 319606bfe48c33b5b5063fb0994afdc496befe80
-  EXGL: 5f24aaf2552f784d5d59e960823faf53d120893c
+  EXGL: 4e30683b6ff703ab25785fe39d24a0f963c7cec6
   Expo: 36b5f625d36728adbdd1934d4d57182f319ab832
   ExpoKeepAwake: 69b59d0a8d2b24de9f82759c39b3821fec030318
   ExpoModulesCore: b5d21c8880afda6fb6ee95469f9ac2ec9b98e995
